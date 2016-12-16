@@ -1,0 +1,58 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+<script src="{% static 'expense_uploader/some_js.js' %}"></script>
+
+<div id="top-padding" style="width:100%;height:50px"></div>
+
+<div class="container">
+    <form action="{% url 'e_up:upload' %}" method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form layout='' label_class='select_file btn btn-default btn-file btn-lg btn-block'%}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                {% bootstrap_icon "upload" %} Upload
+            </button>
+        {% endbuttons %}
+    </form>
+</div>
+
+<div class="container">
+    <table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Employee</th>
+        <th>Address</th>
+        <th>Expense</th>
+        <th>Pre-Tax Amount</th>
+        <th>Tax Name</th>
+        <th>Tax Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if expense_query %}
+        {% for expense in expense_query %}
+            <tr>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.employee_name }}</td>
+                <td>{{ expense.employee_address }}</td>
+                <td>{{ expense.expense_description }}</td>
+                <td>{{ expense.pre_tax_amount }}</td>
+                <td>{{ expense.tax_name }}</td>
+                <td>{{ expense.tax_amount }}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <p>Database Empty</p>
+    {% endif %}
+    </tbody>
+    </table>
+</div>
+
+
